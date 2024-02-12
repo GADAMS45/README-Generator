@@ -1,6 +1,8 @@
 var inquirer = require('inquirer');
 var fs = require("fs");
 
+var generateMarkdown = require("./utils/generateMarkdown")
+
 inquirer
   .prompt([
     {
@@ -12,7 +14,22 @@ inquirer
         type: "input",
         name: "description",
         message: "What is the description of the project?"
-    }
+    },
+    {
+        type: "list",
+        name: "license",
+        message: "Choose the license type",
+        choices: [
+            "MIT",
+            "Apache_2.0",
+            "MPL_2.0"
+        ]
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "What is your github username?"
+    },
    
   ])
   .then((answers) => {
@@ -21,34 +38,7 @@ inquirer
     console.log(answers);
 
 
-    const template = `
-# ${answers.title}
-
-## Description
-${answers.description}
-
-## Table of Contents
-- [Installation](#installation)
-- [Usage](#usage)
-
-## Installation
-ijnibuytfytcvubhn
-
-## Usage
-iubioubnboinbo
-
-## License
-oinoviernroeivn
-
-## Contributing
-dojnoeno
-
-## Tests
-wpomwepomwer
-
-## Questions
-poimjpwoim
-    `
+    const template = generateMarkdown(answers)
 
 
     fs.writeFile("./README.md", template, function() {
